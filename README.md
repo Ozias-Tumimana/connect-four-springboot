@@ -4,7 +4,7 @@ A full-stack Connect Four web application featuring a RESTful API backend built 
 
 ---
 
-### **✨ [Live Demo](https://YOUR-GITHUB-PAGES-URL)** ✨
+### **✨ [Live Demo]( https://ozias-tumimana.github.io/connect-four-springboot/)** ✨
 
 *Note: The backend is hosted on a free service and may take up to 50 seconds to "wake up" on the first visit.*
 
