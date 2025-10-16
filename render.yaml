@@ -1,0 +1,16 @@
+services:
+  # This defines your Spring Boot backend service
+  - type: web
+    name: connect-four-api-ozias
+    # Explicitly tells Render to use its Java environment
+    env: java
+    # Tells Render where the Java project is located
+    rootDir: connectfour-api
+    # The command to build your application
+    buildCommand: "./mvnw clean package"
+    # The command to start your application
+    startCommand: "java -jar target/connectfour-api-0.0.1-SNAPSHOT.jar"
+    # Sets the required environment variable
+    envVars:
+      - key: JAVA_VERSION
+        value: 17
