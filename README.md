@@ -32,10 +32,10 @@ A full-stack Connect Four web application featuring a RESTful API backend built 
 ## **Screenshots**
 
 ### The Game Board
-![Game Board Screenshot](URL-TO-YOUR-GAME-BOARD-SCREENSHOT)
+![Game Board Screenshot](docs/images/husky-connect4-gameboard.png)
 
 ### The Dubs Win Screen
-![Win Screen Screenshot](URL-TO-YOUR-WIN-SCREEN-SCREENSHOT)
+![Win Screen Screenshot](https://github.com/Ozias-Tumimana/connect-four-springboot/blob/11cb427f74ce2e99cbb221f99290a80198f81277/docs/images/husky-connect4-gameboard-winscreen.png)
 
 ---
 
