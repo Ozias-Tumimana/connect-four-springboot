@@ -8,7 +8,7 @@ import java.util.Arrays;
  * without direct user input (Scanner).
  */
 public class ConnectFourGame {
-    public static final String PLAYER_1_TOKEN = "🔴";
+    public static final String PLAYER_1_TOKEN = "🟣";
     public static final String PLAYER_2_TOKEN = "🟡";
     public static final String EMPTY_TOKEN = "⚪";
     public static final int PLAYER_1 = 1;

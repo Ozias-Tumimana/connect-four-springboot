@@ -3,29 +3,27 @@ const API_BASE_URL = 'http://localhost:8080/api/connectfour';
 const boardElement = document.getElementById('connect-four-board');
 const statusMessageElement = document.getElementById('status-message');
 const newGameButton = document.getElementById('new-game-button');
+const dropSound = document.getElementById('drop-sound');
+
+// NEW: Get references to the win screen elements
+const winScreen = document.getElementById('win-screen');
+const winMessage = document.getElementById('win-message');
+const loserMessage = document.getElementById('loser-message');
+const playAgainButton = document.getElementById('play-again-button');
+
 
 const PLAYER_TOKENS = {
-    '⚪': '',          // Empty
-    '🔴': 'player1', // Player 1
-    '🟡': 'player2'  // Player 2
+    '⚪': '',
+    '🟣': 'player1',
+    '🟡': 'player2'
 };
 
 // --- API FUNCTIONS --- //
 
-/** Fetches the current game state from the backend */
-async function getGameState() {
-    try {
-        const response = await fetch(`${API_BASE_URL}/status`);
-        if (!response.ok) throw new Error('Failed to fetch game state.');
-        const gameState = await response.json();
-        updateUI(gameState);
-    } catch (error) {
-        statusMessageElement.textContent = error.message;
-    }
-}
-
 /** Starts a new game */
 async function startNewGame() {
+    // NEW: Hide the win screen when a new game starts
+    winScreen.classList.add('hidden');
     try {
         const response = await fetch(`${API_BASE_URL}/start`, { method: 'POST' });
         if (!response.ok) throw new Error('Failed to start a new game.');
@@ -42,21 +40,38 @@ async function makeMove(column) {
         const response = await fetch(`${API_BASE_URL}/move`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ column: column + 1, action: 'A' }) // API is 1-based
+            body: JSON.stringify({ column: column + 1, action: 'A' })
         });
 
+        // If the response is NOT okay (e.g., 400 Bad Request), handle it as an error
         if (!response.ok) {
-            const errorData = await response.text();
-            throw new Error(errorData);
+            // UPDATED: Parse the JSON error object from the backend
+            const errorData = await response.json(); 
+            // UPDATED: Throw an error with the specific message from the JSON
+            throw new Error(errorData.message);
         }
 
         const gameState = await response.json();
         updateUI(gameState);
+        dropSound.currentTime = 0;
+        dropSound.play();
+
     } catch (error) {
-        // Display backend error message directly
-        statusMessageElement.textContent = error.message;
+        let friendlyMessage;
+
+        if (error.message.includes("Game is already over")) {
+            friendlyMessage = "Game is over! Click 'New Game' to play again.";
+        } else if (error.message.includes("Chosen column is already full")) {
+            friendlyMessage = "That column is full! Try another.";
+        } else if (error.message.includes("Failed to fetch")) {
+            friendlyMessage = "Could not connect to the game server.";
+        } else {
+            friendlyMessage = "Illegal Move, Try Again!";
+        }
+        statusMessageElement.textContent = friendlyMessage;
     }
 }
+
 
 // --- UI RENDERING --- //
 
@@ -64,27 +79,29 @@ async function makeMove(column) {
 function updateUI(gameState) {
     renderBoard(gameState.board);
     updateStatusMessage(gameState);
+
+    // NEW: Show the win screen if the game is over and there is a winner
+    if (gameState.gameOver && gameState.winner !== 0) {
+        showWinScreen(gameState.winner);
+    }
 }
 
 /** Renders the game board */
 function renderBoard(board) {
-    boardElement.innerHTML = ''; // Clear previous board state
+    boardElement.innerHTML = '';
     for (let row = 0; row < 6; row++) {
         for (let col = 0; col < 7; col++) {
             const cell = document.createElement('div');
             cell.classList.add('board-cell');
-            cell.dataset.column = col; // Store column index in data attribute
+            cell.dataset.column = col;
 
             const token = document.createElement('div');
             token.classList.add('token');
-            
-            // Get the CSS class for the token ('player1', 'player2', or '')
             const tokenSymbol = board[row][col];
             const tokenClass = PLAYER_TOKENS[tokenSymbol];
             if (tokenClass) {
                 token.classList.add(tokenClass);
             }
-            
             cell.appendChild(token);
             boardElement.appendChild(cell);
         }
@@ -95,35 +112,43 @@ function renderBoard(board) {
 function updateStatusMessage(gameState) {
     if (gameState.gameOver) {
         if (gameState.winner === 1) {
-            statusMessageElement.textContent = 'Player 1 (🔴) Wins!';
+            statusMessageElement.textContent = 'Player 1 (🟣) Wins!';
         } else if (gameState.winner === 2) {
             statusMessageElement.textContent = 'Player 2 (🟡) Wins!';
         } else {
             statusMessageElement.textContent = 'It\'s a Tie!';
         }
     } else {
-        const nextPlayerToken = gameState.nextPlayer === 1 ? '🔴' : '🟡';
+        const nextPlayerToken = gameState.nextPlayer === 1 ? '🟣' : '🟡';
         statusMessageElement.textContent = `Player ${gameState.nextPlayer}'s Turn ${nextPlayerToken}`;
     }
 }
 
+/** NEW: Function to show and populate the win screen */
+function showWinScreen(winner) {
+    const winnerToken = winner === 1 ? 'Player 1 (🟣)' : 'Player 2 (🟡)';
+    const loserToken = winner === 1 ? 'Player 2 (🟡)' : 'Player 1 (🟣)';
+
+    winMessage.textContent = `Good job, ${winnerToken}!`;
+    loserMessage.textContent = `Try again, ${loserToken}!`;
+    
+    // Make the win screen visible
+    winScreen.classList.remove('hidden');
+}
 
 // --- EVENT LISTENERS --- //
 newGameButton.addEventListener('click', startNewGame);
+playAgainButton.addEventListener('click', startNewGame); // The new button also starts a new game
 
 boardElement.addEventListener('click', (event) => {
-    // Check if a cell was clicked
     if (event.target.classList.contains('board-cell')) {
         const column = parseInt(event.target.dataset.column, 10);
         makeMove(column);
     } else if (event.target.parentElement.classList.contains('board-cell')) {
-        // Check if the token inside a cell was clicked
         const column = parseInt(event.target.parentElement.dataset.column, 10);
         makeMove(column);
     }
 });
 
-
 // --- INITIAL LOAD --- //
-// Load the game state when the page first opens
 startNewGame();
