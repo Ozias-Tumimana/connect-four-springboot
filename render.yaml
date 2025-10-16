@@ -4,3 +4,4 @@ services:
     runtime: docker
     dockerfilePath: ./connectfour-api/Dockerfile
     dockerContext: .
+    plan: free
