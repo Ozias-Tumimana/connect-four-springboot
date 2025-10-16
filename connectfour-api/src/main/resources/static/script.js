@@ -1,3 +1,4 @@
+// --- CONSTANTS & STATE --- //
 const API_BASE_URL = 'https://connect-four-api-ozias.onrender.com/api/connectfour';
 const boardElement = document.getElementById('connect-four-board');
 const statusMessageElement = document.getElementById('status-message');
@@ -18,14 +19,24 @@ const PLAYER_TOKENS = {
 
 // --- API FUNCTIONS --- //
 
+/** Starts a new game */
 async function startNewGame() {
     winScreen.classList.add('hidden');
+    // Give user feedback that the server is waking up
+    statusMessageElement.textContent = "Waking up the server, this may take a moment...";
     try {
         const response = await fetch(`${API_BASE_URL}/start`, { method: 'POST' });
-        if (!response.ok) throw new Error('Failed to start a new game.');
+
+        if (!response.ok) {
+            // Get a more detailed error if the server responds badly
+            const errorText = await response.text();
+            throw new Error(`Server connection failed: ${errorText}`);
+        }
+        
         const gameState = await response.json();
         updateUI(gameState);
     } catch (error) {
+        // This will now display a much more useful error in the browser
         statusMessageElement.textContent = error.message;
     }
 }
@@ -115,7 +126,7 @@ function updateStatusMessage(gameState) {
     }
 }
 
-/** NEW: Function to show and populate the win screen */
+/** Function to show and populate the win screen */
 function showWinScreen(winner) {
     const winnerToken = winner === 1 ? 'Player 1 (🟣)' : 'Player 2 (🟡)';
     const loserToken = winner === 1 ? 'Player 2 (🟡)' : 'Player 1 (🟣)';
