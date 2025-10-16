@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://connect-four-api-ozias.onrender.com';
+const API_BASE_URL = 'https://connect-four-api-ozias.onrender.com/api/connectfour';
 const boardElement = document.getElementById('connect-four-board');
 const statusMessageElement = document.getElementById('status-message');
 const newGameButton = document.getElementById('new-game-button');
