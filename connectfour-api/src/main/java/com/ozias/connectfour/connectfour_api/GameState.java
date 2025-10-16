@@ -1,6 +1,5 @@
 package com.ozias.connectfour.connectfour_api;
 
-// Lombok annotation to automatically generate getters, toString, equals, and hashCode methods
 import lombok.Getter; 
 
 /**

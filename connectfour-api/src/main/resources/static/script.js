@@ -1,11 +1,9 @@
-// --- CONSTANTS & STATE --- //
-const API_BASE_URL = 'http://localhost:8080/api/connectfour';
+const API_BASE_URL = 'https://connect-four-api-ozias.onrender.com';
 const boardElement = document.getElementById('connect-four-board');
 const statusMessageElement = document.getElementById('status-message');
 const newGameButton = document.getElementById('new-game-button');
 const dropSound = document.getElementById('drop-sound');
 
-// NEW: Get references to the win screen elements
 const winScreen = document.getElementById('win-screen');
 const winMessage = document.getElementById('win-message');
 const loserMessage = document.getElementById('loser-message');
@@ -20,9 +18,7 @@ const PLAYER_TOKENS = {
 
 // --- API FUNCTIONS --- //
 
-/** Starts a new game */
 async function startNewGame() {
-    // NEW: Hide the win screen when a new game starts
     winScreen.classList.add('hidden');
     try {
         const response = await fetch(`${API_BASE_URL}/start`, { method: 'POST' });
@@ -43,11 +39,8 @@ async function makeMove(column) {
             body: JSON.stringify({ column: column + 1, action: 'A' })
         });
 
-        // If the response is NOT okay (e.g., 400 Bad Request), handle it as an error
         if (!response.ok) {
-            // UPDATED: Parse the JSON error object from the backend
             const errorData = await response.json(); 
-            // UPDATED: Throw an error with the specific message from the JSON
             throw new Error(errorData.message);
         }
 
@@ -75,12 +68,10 @@ async function makeMove(column) {
 
 // --- UI RENDERING --- //
 
-/** Updates the entire UI based on the game state from the backend */
 function updateUI(gameState) {
     renderBoard(gameState.board);
     updateStatusMessage(gameState);
 
-    // NEW: Show the win screen if the game is over and there is a winner
     if (gameState.gameOver && gameState.winner !== 0) {
         showWinScreen(gameState.winner);
     }
@@ -138,7 +129,7 @@ function showWinScreen(winner) {
 
 // --- EVENT LISTENERS --- //
 newGameButton.addEventListener('click', startNewGame);
-playAgainButton.addEventListener('click', startNewGame); // The new button also starts a new game
+playAgainButton.addEventListener('click', startNewGame); 
 
 boardElement.addEventListener('click', (event) => {
     if (event.target.classList.contains('board-cell')) {
@@ -150,5 +141,4 @@ boardElement.addEventListener('click', (event) => {
     }
 });
 
-// --- INITIAL LOAD --- //
 startNewGame();

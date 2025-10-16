@@ -110,7 +110,7 @@ h1 {
 
 .win-modal {
     background-color: #4b2e83;
-    padding: 50px; /* INCREASED PADDING for a larger overall modal */
+    padding: 50px; 
     border-radius: 15px;
     border: 5px solid #b7a57a;
     text-align: center;
@@ -119,28 +119,28 @@ h1 {
 }
 
 .win-modal img {
-    width: 200px;  /* INCREASED IMAGE SIZE */
-    height: 200px; /* INCREASED IMAGE SIZE */
+    width: 200px;  
+    height: 200px; 
     border-radius: 50%;
     border: 4px solid #ffd700;
-    object-fit: cover; /* This is key to centering Dubs' face */
-    object-position: center; /* Ensures the center of the image is always shown */
+    object-fit: cover; 
+    object-position: center; 
 }
 
 .win-modal h2 {
-    font-size: 2.2em; /* Slightly larger text */
-    margin-top: 25px; /* More space above the message */
+    font-size: 2.2em; 
+    margin-top: 25px;
     margin-bottom: 10px;
     color: #ffd700;
 }
 
 .win-modal p {
-    font-size: 1.4em; /* Slightly larger text */
-    margin-bottom: 35px; /* More space above the button */
+    font-size: 1.4em; 
+    margin-bottom: 35px;
 }
 
 #play-again-button {
-    padding: 12px 25px; /* Slightly larger button */
+    padding: 12px 25px; 
     font-size: 1.1em;
     font-weight: 600;
     border-radius: 5px;

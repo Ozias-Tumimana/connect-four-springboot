@@ -6,12 +6,11 @@ import org.springframework.stereotype.Service;
  * Service layer to hold the state of the single Connect Four game 
  * and manage its lifecycle (start, reset, move execution).
  */
-@Service // Marks this class as a Spring Singleton Service
+@Service
 public class ConnectFourService {
     private ConnectFourGame game;
 
     public ConnectFourService() {
-        // Initialize the game when the service starts
         this.game = new ConnectFourGame();
     }
 
@@ -26,7 +25,6 @@ public class ConnectFourService {
      * @param action "A" for add, "R" for remove
      */
     public void executeMove(int column, String action) {
-        // Calls the method we added in the previous step
         this.game.executeMove(column, action);
     }
 
