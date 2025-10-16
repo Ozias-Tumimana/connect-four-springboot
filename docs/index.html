@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ozias' Husky Connect Four</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="images/favicon.png">
+</head>
+<body>
+    <h1>Ozias' Husky Connect Four</h1>
+    
+    <div id="game-info">
+        <h2 id="status-message">Loading...</h2>
+    </div>
+    <div id="connect-four-board"></div>
+    <button id="new-game-button">New Game</button>
+
+    <audio id="drop-sound" src="sounds/plop.wav"></audio>
+
+    <div id="win-screen" class="hidden">
+        <div class="win-modal">
+            <img src="images/dubs.png" alt="Dubs the UW Mascot">
+            <h2 id="win-message"></h2>
+            <p id="loser-message"></p>
+            <button id="play-again-button">Play Again</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
