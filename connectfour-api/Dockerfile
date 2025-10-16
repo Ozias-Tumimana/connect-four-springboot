@@ -2,12 +2,12 @@ FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
+COPY connectfour-api/.mvn/ .mvn
+COPY connectfour-api/mvnw connectfour-api/pom.xml ./
 
 RUN ./mvnw dependency:go-offline
 
-COPY src ./src
+COPY connectfour-api/src ./src
 
 RUN ./mvnw package -DskipTests
 
