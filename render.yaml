@@ -1,9 +1,6 @@
 services:
   - type: web
     name: connect-four-api-ozias
-    rootDir: connectfour-api
-    buildCommand: "./mvnw clean package"
-    startCommand: "java -jar target/connectfour-api-0.0.1-SNAPSHOT.jar"
-    envVars:
-      - key: JAVA_VERSION
-        value: 17
+    runtime: docker
+    dockerfilePath: ./connectfour-api/Dockerfile
+    dockerContext: .
