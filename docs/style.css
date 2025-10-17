@@ -8,14 +8,16 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    min-height: 100vh; /* Use min-height to allow scrolling on small screens */
     margin: 0;
+    padding: 20px 0; /* Add some vertical padding */
 }
 
 h1 {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 2px;
+    text-align: center; /* Ensure title centers on small screens */
 }
 
 #connect-four-board {
@@ -93,7 +95,6 @@ h1 {
     transform: scale(1.05);
 }
 
-
 /* --- Win Screen Modal Styles --- */
 #win-screen {
     position: fixed;
@@ -106,6 +107,8 @@ h1 {
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    padding: 15px; /* Add padding for small screens */
+    box-sizing: border-box;
 }
 
 .win-modal {
@@ -157,4 +160,52 @@ h1 {
 
 .hidden {
     display: none !important;
+}
+
+
+
+/* Mobile Device  CSS*/
+@media (max-width: 600px) {
+    
+    :root {
+        --cell-size: 12vw;
+    }
+
+    #connect-four-board {
+        grid-template-columns: repeat(7, var(--cell-size));
+        grid-template-rows: repeat(6, var(--cell-size));
+        padding: 1.5vw;
+        border-width: 5px;
+    }
+
+    .board-cell {
+        width: var(--cell-size);
+        height: var(--cell-size);
+    }
+
+    .player1, .player2 {
+        border-width: 2px; 
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+    #status-message {
+        font-size: 1.2rem;
+    }
+
+    .win-modal {
+        padding: 25px;
+    }
+    .win-modal img {
+        width: 120px;
+        height: 120px;
+    }
+    .win-modal h2 {
+        font-size: 1.8em;
+    }
+    .win-modal p {
+        font-size: 1.1em;
+        margin-bottom: 20px;
+    }
 }
